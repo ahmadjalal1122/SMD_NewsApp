@@ -1,11 +1,17 @@
 package com.loc.newsapp.presentation.home.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.loc.newsapp.R
@@ -35,41 +42,114 @@ import com.loc.newsapp.presentation.Dimens.ExtraSmallPadding2
 import com.loc.newsapp.presentation.Dimens.SmallIconSize
 import com.loc.newsapp.ui.theme.NewsAppTheme
 
+//@Composable
+//fun ArticleCard(
+//    modifier: Modifier = Modifier,
+//    article: Article,
+//    onClick: (() -> Unit)? = null
+//) {
+//
+//    val context = LocalContext.current
+//    Row(
+//        modifier = modifier.clickable { onClick?.invoke() },
+//
+//        ) {
+//        AsyncImage(
+//            modifier = Modifier
+//                .size(ArticleCardSize)
+//                .clip(MaterialTheme.shapes.medium),
+//            model = ImageRequest.Builder(context).data(article.urlToImage).build(),
+//            contentDescription = null,
+//            contentScale = ContentScale.Crop
+//        )
+//        Column(
+//            verticalArrangement = Arrangement.SpaceAround,
+//            modifier = Modifier
+//                .padding(horizontal = ExtraSmallPadding)
+//                .height(ArticleCardSize)
+//        ) {
+//            Text(
+//                text = article.title,
+//                style = MaterialTheme.typography.bodyMedium.copy(),
+//                color = colorResource(id = R.color.text_title),
+//                maxLines = 2,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = article.source.name,
+//                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+//                    color = colorResource(id = R.color.body)
+//                )
+//                Spacer(modifier = Modifier.width(ExtraSmallPadding2))
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_time),
+//                    contentDescription = null,
+//                    modifier = Modifier.size(SmallIconSize),
+//                    tint = colorResource(id = R.color.body)
+//                )
+//                Spacer(modifier = Modifier.width(ExtraSmallPadding))
+//                Text(
+//                    text = article.publishedAt,
+//                    style = MaterialTheme.typography.labelSmall,
+//                    color = colorResource(id = R.color.body)
+//                )
+//            }
+//        }
+//    }
+//}
 @Composable
 fun ArticleCard(
     modifier: Modifier = Modifier,
     article: Article,
     onClick: (() -> Unit)? = null
 ) {
-
     val context = LocalContext.current
-    Row(
-        modifier = modifier.clickable { onClick?.invoke() },
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(16f / 9)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable { onClick?.invoke() }
 
-        ) {
+    ) {
+        // Display the image
         AsyncImage(
             modifier = Modifier
-                .size(ArticleCardSize)
-                .clip(MaterialTheme.shapes.medium),
+                .fillMaxSize(),
             model = ImageRequest.Builder(context).data(article.urlToImage).build(),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
+
+        // Overlay the text content at the bottom
         Column(
-            verticalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
-                .padding(horizontal = ExtraSmallPadding)
-                .height(ArticleCardSize)
+                .fillMaxWidth()
+//                .fillMaxHeight()
+//                .padding(ExtraSmallPadding)
+//                .padding(bottom = ExtraSmallPadding)
+                .align(Alignment.BottomStart)
+                .background(
+                    MaterialTheme.colorScheme.background.copy(alpha = 0.7f)
+                )
         ) {
             Text(
                 text = article.title,
                 style = MaterialTheme.typography.bodyMedium.copy(),
                 color = colorResource(id = R.color.text_title),
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                modifier=Modifier.padding(5.dp)
             )
+            Spacer(modifier = Modifier.height(ExtraSmallPadding))
+
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier=Modifier.padding(5.dp)
+
             ) {
                 Text(
                     text = article.source.name,
@@ -93,6 +173,9 @@ fun ArticleCard(
         }
     }
 }
+
+
+
 
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
